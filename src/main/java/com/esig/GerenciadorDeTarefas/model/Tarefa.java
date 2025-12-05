@@ -19,8 +19,13 @@ public class Tarefa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(columnDefinition = "TEXT")
     private String titulo;
+
+    @Column(columnDefinition = "TEXT")
     private String descricao;
+
+    @Column(columnDefinition = "TEXT")
     private String responsavel;
 
     @Enumerated(EnumType.STRING)

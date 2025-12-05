@@ -24,7 +24,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    // Prefixo padrão de tokens JWT no cabeçalho Authorization
     private static final String BEARER_PREFIX = "Bearer ";
 
     @Override
@@ -32,24 +31,20 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         try {
-            // 1. Tenta extrair o JWT da requisição
+
             String jwt = getJwtFromRequest(request);
 
             if (jwt != null && tokenProvider.validateToken(jwt)) {
-                // 2. Se o token é válido, extrai o username
                 String username = tokenProvider.getUsernameFromToken(jwt);
 
-                // 3. Carrega os detalhes do usuário pelo username
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-                // 4. Cria o objeto de autenticação para o Spring Security
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
 
-                // 5. Adiciona detalhes da requisição (útil para logs e auditoria)
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
-                // 6. Define o usuário como autenticado no contexto de segurança do Spring
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         } catch (Exception ex) {
@@ -67,9 +62,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
 
-        // Verifica se o cabeçalho existe e começa com o prefixo "Bearer "
         if (bearerToken != null && bearerToken.startsWith(BEARER_PREFIX)) {
-            // Retorna apenas a string do token
             return bearerToken.substring(BEARER_PREFIX.length());
         }
         return null;

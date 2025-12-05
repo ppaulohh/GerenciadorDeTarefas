@@ -47,13 +47,17 @@ public class TarefaService {
         return tarefaRepository.save(tarefa);
     }
 
-    // 5. Listar e Filtrar Tarefas [cite: 14, 26]
-    public List<Tarefa> listarTarefas(String termo, Situacao situacao) {
-        if (termo != null && !termo.isEmpty()) {
-            // Implementa a lógica de busca por Titulo/Descrição e Situação [cite: 26]
-            return tarefaRepository.findByTituloContainingOrDescricaoContainingAndSituacao(termo, termo, situacao);
-        }
-        // Se não houver termo de busca, busca apenas pela Situação
-        return tarefaRepository.findBySituacao(situacao);
+    public List<Tarefa> listarTarefasComFiltros(
+            Long id,
+            String termoBusca,
+            String responsavel,
+            Situacao concluida
+    ) {
+        return tarefaRepository.findByFilters(
+                id,
+                termoBusca,
+                responsavel,
+                concluida
+        );
     }
 }

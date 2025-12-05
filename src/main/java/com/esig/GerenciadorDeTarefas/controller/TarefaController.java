@@ -26,10 +26,18 @@ public class TarefaController {
 
     @GetMapping
     public ResponseEntity<List<Tarefa>> listarTarefas(
-            @RequestParam(required = false) String termo,
-            @RequestParam(required = false, defaultValue = "EM_ANDAMENTO") Situacao situacao) {
+            @RequestParam(required = false) Long id,
+            @RequestParam(required = false) String termoBusca,
+            @RequestParam(required = false) String responsavel,
+            @RequestParam(required = false) Situacao situacao
+    ) {
         // *Este endpoint deve exigir autenticação JWT *
-        List<Tarefa> tarefas = tarefaService.listarTarefas(termo, situacao);
+        List<Tarefa> tarefas = tarefaService.listarTarefasComFiltros(
+                id,
+                termoBusca,
+                responsavel,
+                situacao
+        );
         return ResponseEntity.ok(tarefas);
     }
 
