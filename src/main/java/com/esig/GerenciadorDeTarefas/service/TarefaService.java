@@ -25,12 +25,25 @@ public class TarefaService {
         Tarefa tarefaExistente = tarefaRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Tarefa não encontrada"));
 
-        // Atualiza os campos necessários (exceto o ID)
-        tarefaExistente.setTitulo(tarefaAtualizada.getTitulo());
-        tarefaExistente.setDescricao(tarefaAtualizada.getDescricao());
-        tarefaExistente.setResponsavel(tarefaAtualizada.getResponsavel());
-        tarefaExistente.setPrioridade(tarefaAtualizada.getPrioridade());
-        tarefaExistente.setDeadline(tarefaAtualizada.getDeadline());
+
+        if (tarefaAtualizada.getTitulo() != null) {
+            tarefaExistente.setTitulo(tarefaAtualizada.getTitulo());
+        }
+        if (tarefaAtualizada.getDescricao() != null) {
+            tarefaExistente.setDescricao(tarefaAtualizada.getDescricao());
+        }
+        if (tarefaAtualizada.getResponsavel() != null) {
+            tarefaExistente.setResponsavel(tarefaAtualizada.getResponsavel());
+        }
+        if (tarefaAtualizada.getPrioridade() != null) {
+            tarefaExistente.setPrioridade(tarefaAtualizada.getPrioridade());
+        }
+        if (tarefaAtualizada.getDeadline() != null) {
+            tarefaExistente.setDeadline(tarefaAtualizada.getDeadline());
+        }
+        if (tarefaAtualizada.getSituacao() != null) {
+            tarefaExistente.setSituacao(tarefaAtualizada.getSituacao());
+        }
 
         return tarefaRepository.save(tarefaExistente);
     }
@@ -51,9 +64,9 @@ public class TarefaService {
             Long id,
             String termoBusca,
             String responsavel,
-            Situacao concluida
+            String concluida
     ) {
-        return tarefaRepository.findByFilters(
+        return tarefaRepository.findByFiltersNative(
                 id,
                 termoBusca,
                 responsavel,

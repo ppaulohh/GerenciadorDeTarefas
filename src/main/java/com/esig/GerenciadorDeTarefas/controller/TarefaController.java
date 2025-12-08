@@ -36,7 +36,7 @@ public class TarefaController {
                 id,
                 termoBusca,
                 responsavel,
-                situacao
+                situacao != null ? situacao.name() : null
         );
         return ResponseEntity.ok(tarefas);
     }
@@ -55,7 +55,7 @@ public class TarefaController {
         return ResponseEntity.noContent().build();
     }
 
-    // PATCH /api/tarefas/{id}/concluir (Concluir Tarefa) [cite: 46]
+    // PATCH /api/tarefas/{id}/concluir (Concluir Tarefa)
     @PatchMapping("/{id}/concluir")
     public ResponseEntity<Tarefa> concluirTarefa(@PathVariable Long id) {
         // *Este endpoint deve exigir autenticação JWT *
